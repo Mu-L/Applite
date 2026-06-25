@@ -66,6 +66,12 @@ final class BrewService {
                 busyLabel: String(localized: "Installing", comment: "Install progress text")
             )
 
+            // Stopped by the user — no success/failure surface.
+            if Task.isCancelled {
+                vm.progressState = .idle
+                return
+            }
+
             if case .failure(let error) = result {
                 let completeOutput = error.output
                 var alertMessage = error.underlying.localizedDescription
@@ -157,7 +163,15 @@ final class BrewService {
 
             let command = "\(BrewPaths.currentBrewExecutable.quotedPath()) upgrade --cask \(vm.fullToken)"
 
-            if case .failure(let error) = await self.streamBrewCommand(command, vm: vm, busyLabel: updateLabel) {
+            let result = await self.streamBrewCommand(command, vm: vm, busyLabel: updateLabel)
+
+            // Stopped by the user — no success/failure surface.
+            if Task.isCancelled {
+                vm.progressState = .idle
+                return
+            }
+
+            if case .failure(let error) = result {
                 await self.showFailure(
                     for: vm,
                     error: error.underlying,
@@ -187,7 +201,15 @@ final class BrewService {
 
             let command = "\(BrewPaths.currentBrewExecutable.quotedPath()) reinstall --cask \(vm.fullToken)"
 
-            if case .failure(let error) = await self.streamBrewCommand(command, vm: vm, busyLabel: reinstallLabel) {
+            let result = await self.streamBrewCommand(command, vm: vm, busyLabel: reinstallLabel)
+
+            // Stopped by the user — no success/failure surface.
+            if Task.isCancelled {
+                vm.progressState = .idle
+                return
+            }
+
+            if case .failure(let error) = result {
                 await self.showFailure(
                     for: vm,
                     error: error.underlying,
@@ -218,6 +240,15 @@ final class BrewService {
         for vm in vms {
             self.update(vm)
         }
+    }
+
+    /// Stops the cask's in-progress streaming operation (install, update, reinstall).
+    ///
+    /// Cancelling the task finishes the output stream, which terminates the
+    /// underlying brew process (see `Shell.stream`). The operation then sees
+    /// `Task.isCancelled` and resets the cask back to idle.
+    func cancel(_ vm: CaskViewModel) {
+        activeTasks.first { $0.viewModel == vm }?.task.cancel()
     }
 
     /// Gets additional info for a cask from brew CLI

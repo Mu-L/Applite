@@ -7040,6 +7040,9 @@
         }
       }
     },
+    "Stop download" : {
+
+    },
     "System" : {
       "comment" : "Color mode",
       "extractionState" : "manual",
