@@ -8,18 +8,38 @@
 import SwiftUI
 
 struct GreedyUpgradeToggle: View {
+    /// How the explanation is presented alongside the toggle.
+    enum DescriptionPlacement {
+        /// Caption beneath the title — fits a grouped `Form` (Settings).
+        case inline
+        /// Info popover beside the title — fits compact contexts (toolbar).
+        case popover
+    }
+
+    var descriptionPlacement: DescriptionPlacement = .inline
+
     @AppStorage(Preferences.greedyUpgrade) var greedyUpgrade
-    
+
     var body: some View {
-        HStack {
-            Toggle(isOn: $greedyUpgrade) {
-                Text("Greedy Upgrade", comment: "Brew greedy flag toggle title")
+        Toggle(isOn: $greedyUpgrade) {
+            switch descriptionPlacement {
+            case .inline:
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Include Self-Updating Apps", comment: "Brew greedy flag toggle title")
+                    Text("Show updates for apps that normally update themselves, which are hidden by default. (Homebrew: `--greedy`)", comment: "Brew greedy flag toggle description")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            case .popover:
+                HStack {
+                    Text("Include Self-Updating Apps", comment: "Brew greedy flag toggle title")
+
+                    InfoPopup(
+                        text: "Show updates for apps that normally update themselves, which are hidden by default. (Homebrew: `--greedy`)",
+                        extraPaddingForLines: 3
+                    )
+                }
             }
-            
-            InfoPopup(
-                text: "Enabling greedy upgrade will list all outdated apps, even those that have built-in update mechanisms and handle their own updates.",
-                extraPaddingForLines: 3
-            )
         }
     }
 }

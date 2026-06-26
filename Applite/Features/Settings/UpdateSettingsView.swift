@@ -21,29 +21,30 @@ struct UpdateSettingsView: View {
     }
 
     var body: some View {
-        VStack {
-            Button(action: updater.checkForUpdates) {
-                Label("Check for Updates...", systemImage: "arrow.triangle.2.circlepath")
+        Form {
+            Section {
+                Button(action: updater.checkForUpdates) {
+                    Label("Check for Updates...", systemImage: "arrow.triangle.2.circlepath")
+                }
+
+                LabeledContent("Current app version") {
+                    Text("\(Bundle.main.version) (\(Bundle.main.buildNumber))", comment: "Update settings current app version text (version, build number)")
+                }
             }
 
-            Text("Current app version: \(Bundle.main.version) (\(Bundle.main.buildNumber))", comment: "Update settings current app version text (version, build number)")
-                .font(.system(.body, weight: .light))
-                .foregroundStyle(.secondary)
+            Section {
+                Toggle("Automatically check for updates", isOn: $automaticallyChecksForUpdates)
+                    .onChange(of: automaticallyChecksForUpdates) { _, newValue in
+                        updater.automaticallyChecksForUpdates = newValue
+                    }
 
-            Spacer()
-                .frame(height: 20)
-
-            Toggle("Automatically check for updates", isOn: $automaticallyChecksForUpdates)
-                .onChange(of: automaticallyChecksForUpdates) { _, newValue in
-                    updater.automaticallyChecksForUpdates = newValue
-                }
-
-            Toggle("Automatically download updates", isOn: $automaticallyDownloadsUpdates)
-                .disabled(!automaticallyChecksForUpdates)
-                .onChange(of: automaticallyDownloadsUpdates) { _, newValue in
-                    updater.automaticallyDownloadsUpdates = newValue
-                }
+                Toggle("Automatically download updates", isOn: $automaticallyDownloadsUpdates)
+                    .disabled(!automaticallyChecksForUpdates)
+                    .onChange(of: automaticallyDownloadsUpdates) { _, newValue in
+                        updater.automaticallyDownloadsUpdates = newValue
+                    }
+            }
         }
-        .padding()
+        .formStyle(.grouped)
     }
 }

@@ -15,35 +15,34 @@ struct MirrorsView: View {
     @AppStorage(Preferences.mirrorBottleDomain) var bottleDomain
 
     var body: some View {
-        VStack(alignment: .leading) {
-            Text("Mirror")
-                .bold()
+        Form {
+            Section("Mirror") {
+                Toggle("Enabled", isOn: $mirrorEnabled)
 
-            Toggle("Enabled", isOn: $mirrorEnabled)
-
-            Menu("Presets") {
-                ForEach(mirrorPresets) { preset in
-                    Button(preset.name) {
-                        apiDomain = preset.apiDomain
-                        brewGitRemote = preset.brewGitRemote
-                        coreGitRemote = preset.coreGitRemote
-                        bottleDomain = preset.bottleDomain
+                LabeledContent("Presets") {
+                    Menu("Presets") {
+                        ForEach(mirrorPresets) { preset in
+                            Button(preset.name) {
+                                apiDomain = preset.apiDomain
+                                brewGitRemote = preset.brewGitRemote
+                                coreGitRemote = preset.coreGitRemote
+                                bottleDomain = preset.bottleDomain
+                            }
+                        }
                     }
+                    .menuStyle(.borderedButton)
+                    .fixedSize()
                 }
             }
-            .menuStyle(.borderedButton)
 
-            Divider()
-                .padding(.vertical)
-
-            VStack(alignment: .leading, spacing: 12) {
+            Section("Environment Variables") {
                 EnvironmentInput(title: "HOMEBREW_API_DOMAIN", text: $apiDomain)
                 EnvironmentInput(title: "HOMEBREW_BREW_GIT_REMOTE", text: $brewGitRemote)
                 EnvironmentInput(title: "HOMEBREW_CORE_GIT_REMOTE", text: $coreGitRemote)
                 EnvironmentInput(title: "HOMEBREW_BOTTLE_DOMAIN", text: $bottleDomain)
             }
         }
-        .padding()
+        .formStyle(.grouped)
     }
 
     struct EnvironmentInput: View {
@@ -51,10 +50,12 @@ struct MirrorsView: View {
         @Binding var text: String
 
         var body: some View {
-            VStack(alignment: .leading, spacing: 0) {
+            VStack(alignment: .leading, spacing: 2) {
                 Text(title)
-                    .fontWeight(.light)
+                    .font(.caption.monospaced())
+                    .foregroundStyle(.secondary)
                 TextField(title, text: $text)
+                    .labelsHidden()
                     .textFieldStyle(.roundedBorder)
             }
         }
