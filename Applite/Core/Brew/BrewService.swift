@@ -251,6 +251,26 @@ final class BrewService {
         activeTasks.first { $0.viewModel == vm }?.task.cancel()
     }
 
+    /// Cancels every active task and waits for them to unwind (terminating their
+    /// brew processes via `Shell.stream`'s onTermination), bounded by a timeout so
+    /// quitting can never block indefinitely. Used by the quit-confirmation flow.
+    func cancelAllAndWait() async {
+        let tasks = activeTasks.map(\.task)
+        for task in tasks { task.cancel() }
+
+        await withTaskGroup(of: Void.self) { group in
+            group.addTask {
+                for task in tasks { await task.value }
+            }
+            group.addTask {
+                try? await Task.sleep(for: .seconds(2))
+            }
+            // Return as soon as either all tasks finished unwinding or the timeout fired.
+            await group.next()
+            group.cancelAll()
+        }
+    }
+
     /// Gets additional info for a cask from brew CLI
     func getAdditionalInfoForCask(_ vm: CaskViewModel) async throws -> CaskAdditionalInfo {
         let json = try await Shell.runBrewCommand(["info", "--json=v2", "--cask", vm.fullToken])

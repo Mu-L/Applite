@@ -114,6 +114,10 @@ final class CaskManager {
         brewService.cancel(cask)
     }
 
+    func cancelAllAndWait() async {
+        await brewService.cancelAllAndWait()
+    }
+
     func installAll(_ casks: [CaskViewModel]) {
         brewService.installAll(casks)
     }
