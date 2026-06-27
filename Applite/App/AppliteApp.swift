@@ -77,9 +77,10 @@ struct AppliteApp: App {
         }
         .windowResizability(.contentSize)
 
-        WindowGroup("Shell Output", for: String.self) { $errorString in
+        WindowGroup("Terminal Output", for: String.self) { $errorString in
             ErrorWindowView(errorString: errorString ?? "N/a")
         }
+        .defaultSize(width: 600, height: 400)
 
         WindowGroup("Cask Info", for: CaskAdditionalInfo.self) { $info in
             CaskInfoWindowView(info: info ?? .dummy)

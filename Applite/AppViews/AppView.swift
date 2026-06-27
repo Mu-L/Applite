@@ -230,22 +230,29 @@ struct AppView: View {
                 }
 
         case .failed(let output):
-            HStack {
+            HStack(spacing: 6) {
+                Image(systemName: "exclamationmark.triangle.fill")
+                    .foregroundStyle(.red)
+
                 Text("Error", comment: "Cask action failed (e.g. installation failed)")
                     .foregroundStyle(.red)
 
                 Button {
-                    // Open new window with shell output
+                    // Open new window with terminal output
                     openWindow(value: output)
                 } label: {
-                    Image(systemName: "info.circle")
+                    Image(systemName: "terminal")
                 }
                 .buttonStyle(.bordered)
+                .help("View terminal output")
 
-                Button("OK") {
+                Button {
                     cask.progressState = .idle
+                } label: {
+                    Image(systemName: "xmark")
                 }
                 .buttonStyle(.bordered)
+                .help("Dismiss")
             }
 
         case .idle:

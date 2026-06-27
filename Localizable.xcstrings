@@ -2669,6 +2669,12 @@
         }
       }
     },
+    "Copied" : {
+
+    },
+    "Copy" : {
+
+    },
     "Couldn't download app. No internet connection, or host is unreachable." : {
       "comment" : "No internet alert message",
       "localizations" : {
@@ -3261,6 +3267,9 @@
           }
         }
       }
+    },
+    "Dismiss" : {
+
     },
     "Download Anyway" : {
       "comment" : "App download confirmation button",
@@ -6993,6 +7002,7 @@
     },
     "Shell Output" : {
       "comment" : "Shell output window title",
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -7333,6 +7343,9 @@
         }
       }
     },
+    "Terminal Output" : {
+
+    },
     "Terminals" : {
       "comment" : "App category",
       "extractionState" : "manual",
@@ -7539,6 +7552,9 @@
           }
         }
       }
+    },
+    "This is the output from the failed command. Copy it when reporting an issue." : {
+      "comment" : "Error window description"
     },
     "This will (re)install Applite's Homebrew installation at: `~/Library/Application Support/Applite/homebrew`" : {
       "comment" : "Homebrew reinstallation note",
@@ -8460,6 +8476,9 @@
           }
         }
       }
+    },
+    "View terminal output" : {
+
     },
     "Virtualization" : {
       "comment" : "App category",
