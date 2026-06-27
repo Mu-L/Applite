@@ -18,9 +18,19 @@ struct ExportAppsView: View {
     private let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "AppMigration.ExportAppsView")
 
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(spacing: 12) {
+            Image(systemName: "tray.and.arrow.up.fill")
+                .font(.system(size: 40))
+                .foregroundStyle(.tint)
+
             Text("Export", comment: "App migration export card title")
                 .font(.appliteSmallTitle)
+
+            Text("Export all apps currently installed by Applite to a file.", comment: "App Migration export card description")
+                .multilineTextAlignment(.center)
+                .foregroundStyle(.secondary)
+
+            Spacer()
 
             HStack {
                 AsyncButton {
@@ -40,12 +50,8 @@ struct ExportAppsView: View {
                         .imageScale(.large)
                 }
             }
-            .padding(.bottom, 10)
-
-            Text("Export all apps currently installed by Applite to a file.", comment: "App Migration export card description")
-
-            Spacer()
         }
+        .frame(maxWidth: .infinity)
         .alertManager(alert)
         .fileExporter(isPresented: $showFileExporter, document: exportFile,  contentType: .plainText, defaultFilename: "applite_export") { result in
             switch result {

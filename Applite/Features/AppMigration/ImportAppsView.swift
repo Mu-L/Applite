@@ -13,38 +13,43 @@ struct ImportAppsView: View {
 
     @State var showFileImporter = false
     @State var importSuccessful = false
+    @State var importedCount = 0
     @State var alert = AlertManager()
 
     private let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "AppMigration.ImportAppsView")
 
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(spacing: 12) {
+            Image(systemName: "tray.and.arrow.down.fill")
+                .font(.system(size: 40))
+                .foregroundStyle(.tint)
+
             Text("Import", comment: "App Migration import card title")
                 .font(.appliteSmallTitle)
-
-            HStack {
-                Button {
-                    showFileImporter = true
-                } label: {
-                    Label("Import Apps", systemImage: "square.and.arrow.down")
-                }
-                .controlSize(.large)
-
-                if importSuccessful {
-                    Image(systemName: "square.and.arrow.down.badge.checkmark")
-                        .foregroundStyle(.green)
-                        .imageScale(.large)
-                }
-            }
-            .padding(.bottom, 10)
 
             Text(
                 "**Tip:** You can also import apps from a Brewfile. However, only casks will be installed, other items like formulae and taps will be skipped.",
                 comment: "App Migration import card tip"
             )
+            .multilineTextAlignment(.center)
+            .foregroundStyle(.secondary)
 
             Spacer()
+
+            Button {
+                showFileImporter = true
+            } label: {
+                Label("Import Apps", systemImage: "square.and.arrow.down")
+            }
+            .controlSize(.large)
+
+            if importSuccessful {
+                Label("Installing \(importedCount) apps…", systemImage: "checkmark.circle")
+                    .foregroundStyle(.green)
+                    .font(.callout)
+            }
         }
+        .frame(maxWidth: .infinity)
         .alertManager(alert)
         .fileImporter(isPresented: $showFileImporter, allowedContentTypes: [.plainText, .data]) { result in
             switch result {
@@ -76,6 +81,7 @@ struct ImportAppsView: View {
         caskManager.installAll(casksToInstall)
 
         withAnimation {
+            importedCount = casksToInstall.count
             importSuccessful = true
         }
     }
