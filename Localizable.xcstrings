@@ -5649,6 +5649,7 @@
     },
     "No homepage found" : {
       "comment" : "No homepage found alert",
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {

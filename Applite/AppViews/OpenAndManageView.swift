@@ -13,10 +13,7 @@ struct OpenAndManageView: View {
     var cask: CaskViewModel
     let deleteButton: Bool
 
-    @Environment(CaskManager.self) var caskManager
-
     @State var showAppNotFoundAlert = false
-    @State var showPopover = false
 
     var body: some View {
         // Lauch app
@@ -34,45 +31,6 @@ struct OpenAndManageView: View {
 
         if deleteButton {
             UninstallButton(cask: cask)
-        }
-
-        // More options popover
-        Button() {
-            showPopover = true
-        } label: {
-            Image(systemName: "chevron.down")
-                .padding(.vertical)
-                .contentShape(Rectangle())
-        }
-        .popover(isPresented: $showPopover) {
-            VStack(alignment: .leading, spacing: 6) {
-                GetInfoButton(cask: cask)
-
-                // Reinstall button
-                Button {
-                    caskManager.reinstall(cask)
-                } label: {
-                    Label("Reinstall", systemImage: "arrow.2.squarepath")
-                }
-
-                // Uninstall button
-                Button(role: .destructive) {
-                    caskManager.uninstall(cask)
-                } label: {
-                    Label("Uninstall", systemImage: "trash")
-                        .foregroundStyle(.red)
-                }
-
-                // Uninstall completely button
-                Button(role: .destructive) {
-                    caskManager.uninstall(cask, zap: true)
-                } label: {
-                    Label("Uninstall & delete app data", systemImage: "trash.fill")
-                        .foregroundStyle(.red)
-                }
-            }
-            .padding(8)
-            .buttonStyle(.plain)
         }
     }
 }

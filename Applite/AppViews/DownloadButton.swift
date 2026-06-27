@@ -14,9 +14,7 @@ struct DownloadButton: View {
     @Environment(CaskManager.self) var caskManager
 
     // Alerts
-    @State var showingPopover = false
     @State var showingBrewError = false
-    @State var showingForceInstallConfirmation = false
     @State var showCaveatsAndWarnings = false
 
     @State var buttonFill = false
@@ -66,47 +64,6 @@ struct DownloadButton: View {
         }
         .alert("Broken Brew Path", isPresented: $showingBrewError) {} message: {
             Text(DependencyManager.brokenPathOrInstallMessage)
-        }
-
-        // More actions popover
-        Button() {
-            showingPopover = true
-        } label: {
-            Image(systemName: "chevron.down")
-                .padding(.vertical)
-                .contentShape(Rectangle())
-        }
-        .popover(isPresented: $showingPopover) {
-            VStack(alignment: .leading, spacing: 6) {
-                // Open homepage
-                if let homepageLink = cask.homepage {
-                    Link(destination: homepageLink, label: {
-                        Label("Homepage", systemImage: "house")
-                    })
-                    .foregroundStyle(.primary)
-                } else {
-                    Text("No homepage found")
-                        .fontWeight(.thin)
-                }
-
-                GetInfoButton(cask: cask)
-
-                // Force install button
-                Button {
-                    showingForceInstallConfirmation = true
-                } label: {
-                    Label("Force Install", systemImage: "bolt.trianglebadge.exclamationmark.fill")
-                }
-            }
-            .padding(8)
-            .buttonStyle(.plain)
-        }
-        .confirmationDialog("Are you sure you want to force install \(cask.name)? This will override any current installation!", isPresented: $showingForceInstallConfirmation) {
-            Button("Yes") {
-                caskManager.install(cask, force: true)
-            }
-
-            Button("Cancel", role: .cancel) { }
         }
     }
 }

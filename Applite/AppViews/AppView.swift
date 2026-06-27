@@ -44,7 +44,97 @@ struct AppView: View {
         }
         .buttonStyle(.plain)
         .frame(width: Self.dimensions.width, height: Self.dimensions.height)
+        .modify { view in
+            // Right-click access to the same actions as the chevron menu
+            if showsOptionsMenu {
+                view.contextMenu { optionsMenuContent }
+            } else {
+                view
+            }
+        }
         .alertManager(caskManager.alert)
+    }
+
+    /// The chevron and right-click menu are shown for installable/installed apps,
+    /// but not in the update list.
+    private var showsOptionsMenu: Bool {
+        role != .update
+    }
+
+    /// "More options" menu shared by the chevron button and the card's
+    /// right-click context menu. Items depend on whether the app is installed.
+    @ViewBuilder
+    private var optionsMenuContent: some View {
+        if cask.isInstalled {
+            getInfoButton
+
+            Button {
+                caskManager.reinstall(cask)
+            } label: {
+                Label("Reinstall", systemImage: "arrow.2.squarepath")
+            }
+
+            Divider()
+
+            Button(role: .destructive) {
+                caskManager.uninstall(cask)
+            } label: {
+                Label("Uninstall", systemImage: "trash")
+            }
+
+            Button(role: .destructive) {
+                caskManager.uninstall(cask, zap: true)
+            } label: {
+                Label("Uninstall & delete app data", systemImage: "trash.fill")
+            }
+        } else {
+            if let homepage = cask.homepage {
+                Link(destination: homepage) {
+                    Label("Homepage", systemImage: "house")
+                }
+            }
+
+            getInfoButton
+
+            Divider()
+
+            Button {
+                caskManager.install(cask, force: true)
+            } label: {
+                Label("Force Install", systemImage: "bolt.trianglebadge.exclamationmark.fill")
+            }
+        }
+    }
+
+    private var getInfoButton: some View {
+        Button {
+            Task { await getInfo() }
+        } label: {
+            Label("Get Info", systemImage: "info.circle")
+        }
+    }
+
+    /// Chevron button that opens the options menu (native dropdown).
+    private var optionsMenuButton: some View {
+        Menu {
+            optionsMenuContent
+        } label: {
+            Image(systemName: "chevron.down")
+                .padding(.vertical)
+                .contentShape(Rectangle())
+        }
+        .menuStyle(.borderlessButton)
+        .menuIndicator(.hidden)
+        .fixedSize()
+    }
+
+    private func getInfo() async {
+        do {
+            let info = try await caskManager.getAdditionalInfoForCask(cask)
+            openWindow(value: info)
+        } catch {
+            caskManager.alert.show(error: error, title: "Failed to gather cask info")
+        }
     }
 
     @ViewBuilder
@@ -71,12 +161,16 @@ struct AppView: View {
                     .padding(.trailing, 5)
             }
 
+            optionsMenuButton
+
         case .update:
             UpdateButton(cask: cask)
 
         case .installed:
             OpenAndManageView(cask: cask, deleteButton: true)
                 .padding(.trailing, 5)
+
+            optionsMenuButton
         }
     }
 
