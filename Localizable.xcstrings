@@ -5190,9 +5190,6 @@
         }
       }
     },
-    "Lets apps from developers Apple hasn't verified open without Gatekeeper warnings. Only enable if you trust the source. **Use at your own risk!** (Homebrew: `--no-quarantine`)" : {
-      "comment" : "Brew no quarantine flag toggle description"
-    },
     "Light" : {
       "comment" : "Color mode",
       "extractionState" : "manual",
@@ -7605,9 +7602,6 @@
           }
         }
       }
-    },
-    "Trust Unregistered Developers" : {
-      "comment" : "Brew no quarantine flag toggle title"
     },
     "Turn off few downloads filter" : {
       "comment" : "Filter disable button",

@@ -51,9 +51,6 @@ final class BrewService {
             if force { arguments.append("--force") }
             if appdirOn { arguments.append(appdirArgument) }
 
-            let noQuarantine = UserDefaults.standard.value(for: Preferences.noQuarantine)
-            if noQuarantine { arguments.append("--no-quarantine") }
-
             let command = "\(BrewPaths.currentBrewExecutable.quotedPath()) install --cask \(arguments.joined(separator: " "))"
 
             // Setup progress

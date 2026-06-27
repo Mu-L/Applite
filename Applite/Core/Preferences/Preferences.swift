@@ -42,7 +42,6 @@ enum Preferences {
     static let appdirOn = PreferenceKey("appdirOn", default: false)
     static let appdirPath = PreferenceKey("appdirPath", default: "/Applications")
     static let greedyUpgrade = PreferenceKey("greedyUpgrade", default: false)
-    static let noQuarantine = PreferenceKey("noQuarantine", default: false)
 
     // Proxy
     static let networkProxyEnabled = PreferenceKey("networkProxyEnabled", default: true)

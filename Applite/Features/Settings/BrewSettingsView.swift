@@ -14,7 +14,6 @@ struct BrewSettingsView: View {
     @AppStorage(Preferences.customUserBrewPath) var customUserBrewPath
     @AppStorage(Preferences.brewPathOption) var brewPathOption
     @AppStorage(Preferences.includeCasksFromTaps) var includeCasksFromTaps
-    @AppStorage(Preferences.noQuarantine) var noQuarantine
 
     @State var isSelectedBrewPathValid = false
 
@@ -117,15 +116,6 @@ struct BrewSettingsView: View {
     var otherFlags: some View {
         Section("Advanced") {
             GreedyUpgradeToggle()
-
-            Toggle(isOn: $noQuarantine) {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("Trust Unregistered Developers", comment: "Brew no quarantine flag toggle title")
-                    Text("Lets apps from developers Apple hasn't verified open without Gatekeeper warnings. Only enable if you trust the source. **Use at your own risk!** (Homebrew: `--no-quarantine`)", comment: "Brew no quarantine flag toggle description")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-            }
         }
     }
 
