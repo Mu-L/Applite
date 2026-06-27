@@ -99,8 +99,19 @@ struct AppView: View {
             .scaleEffect(0.8)
 
         case .downloading(let percent):
-            CircularProgressRing(progress: percent)
-                .frame(width: 30, height: 30)
+            Button {
+                caskManager.cancel(cask)
+            } label: {
+                ZStack {
+                    CircularProgressRing(progress: percent)
+                    Image(systemName: "stop.fill")
+                        .font(.system(size: 10))
+                        .foregroundStyle(.secondary)
+                }
+            }
+            .buttonStyle(.plain)
+            .frame(width: 30, height: 30)
+            .help("Stop download")
 
         case .success:
             Image(systemName: "checkmark")

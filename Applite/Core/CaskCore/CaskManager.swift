@@ -110,6 +110,14 @@ final class CaskManager {
         brewService.reinstall(cask)
     }
 
+    func cancel(_ cask: CaskViewModel) {
+        brewService.cancel(cask)
+    }
+
+    func cancelAllAndWait() async {
+        await brewService.cancelAllAndWait()
+    }
+
     func installAll(_ casks: [CaskViewModel]) {
         brewService.installAll(casks)
     }

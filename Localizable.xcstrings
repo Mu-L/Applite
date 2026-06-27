@@ -452,6 +452,17 @@
         }
       }
     },
+    "%@ (%@)" : {
+      "comment" : "Update settings current app version text (version, build number)",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ (%2$@)"
+          }
+        }
+      }
+    },
     "%@ is already installed. If you want to add it to Applite click more options (chevron icon) and press Force Install." : {
       "comment" : "App already installed alert message (parameter: app name)",
       "localizations" : {
@@ -903,6 +914,9 @@
         }
       }
     },
+    "Advanced" : {
+
+    },
     "After reinstalling, all currently installed apps will be unlinked from Applite. They won't be deleted, but you won't be able to update or uninstall them via Applite." : {
       "comment" : "Brew reinstall warning",
       "localizations" : {
@@ -1069,6 +1083,9 @@
     },
     "All your apps are up to date." : {
       "comment" : "Update view no updates available description"
+    },
+    "Also show apps from Homebrew taps (third-party repositories) you've added manually. (Homebrew: `tap`)" : {
+      "comment" : "Brew settings tap toggle description"
     },
     "App Catalog" : {
       "comment" : "Catalog settings title",
@@ -1316,8 +1333,12 @@
         }
       }
     },
+    "App Sources" : {
+
+    },
     "Appdir" : {
       "comment" : "Brew settings appdir section title",
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -1480,6 +1501,9 @@
         }
       }
     },
+    "Applite can use the system network proxy, but only one protocol (HTTP, HTTPS, or SOCKS5). Select your preferred method." : {
+      "comment" : "Proxy settings description"
+    },
     "Applite couldn't open %@" : {
       "comment" : "App couldn't be opened alert",
       "localizations" : {
@@ -1523,6 +1547,7 @@
     },
     "Applite uses the system network proxy, but it can only use one protocol (HTTP, HTTPS, or SOCKS5). Select your preferred method." : {
       "comment" : "Proxy settings description",
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -2257,7 +2282,8 @@
       }
     },
     "Bypasses the Apple Gatekeeper check, which can be useful if the app is from an unregistered developer. **Use it at your own risk!**" : {
-      "comment" : "No quarantine toggle info popup",
+      "comment" : "Brew no quarantine flag toggle description",
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -2798,8 +2824,12 @@
         }
       }
     },
+    "Current app version" : {
+
+    },
     "Current app version: %@ (%@)" : {
       "comment" : "Update settings current app version text (version, build number)",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2970,6 +3000,7 @@
     },
     "Custom Installation Directory" : {
       "comment" : "Appdir textfield",
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -3254,6 +3285,7 @@
     },
     "Download apps to a custom directory instead of `/Applications`" : {
       "comment" : "Appdir toggle info popup ",
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -3419,6 +3451,7 @@
     },
     "Enabling greedy upgrade will list all outdated apps, even those that have built-in update mechanisms and handle their own updates." : {
       "comment" : "Greedy update info popup",
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -3457,6 +3490,9 @@
           }
         }
       }
+    },
+    "Environment Variables" : {
+
     },
     "Error" : {
       "comment" : "Cask action failed (e.g. installation failed)",
@@ -3662,6 +3698,9 @@
           }
         }
       }
+    },
+    "Failed installs & updates" : {
+
     },
     "Failed to export" : {
       "comment" : "Alert message",
@@ -4233,6 +4272,7 @@
     },
     "Greedy Upgrade" : {
       "comment" : "Brew greedy flag toggle title",
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -4767,6 +4807,7 @@
     },
     "Include Casks from Taps" : {
       "comment" : "Third-party taps settings toggle",
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -4805,6 +4846,12 @@
           }
         }
       }
+    },
+    "Include Self-Updating Apps" : {
+      "comment" : "Brew greedy flag toggle title"
+    },
+    "Include Third-Party Taps" : {
+      "comment" : "Brew settings tap toggle title"
     },
     "Info" : {
       "comment" : "Brew Management view info section title",
@@ -4846,6 +4893,9 @@
           }
         }
       }
+    },
+    "Install apps to a folder of your choice instead of /Applications. (Homebrew: `--appdir`)" : {
+      "comment" : "Appdir setting description"
     },
     "Install Separate Brew" : {
       "comment" : "Brew Management button",
@@ -4929,6 +4979,9 @@
         }
       }
     },
+    "Installation Directory" : {
+
+    },
     "Installation failed" : {
       "comment" : "App install alert",
       "localizations" : {
@@ -4969,6 +5022,9 @@
           }
         }
       }
+    },
+    "Installation Location" : {
+
     },
     "Installed" : {
       "comment" : "Brew dependency installed badge text",
@@ -5133,6 +5189,9 @@
           }
         }
       }
+    },
+    "Lets apps from developers Apple hasn't verified open without Gatekeeper warnings. Only enable if you trust the source. **Use at your own risk!** (Homebrew: `--no-quarantine`)" : {
+      "comment" : "Brew no quarantine flag toggle description"
     },
     "Light" : {
       "comment" : "Color mode",
@@ -5634,6 +5693,7 @@
     },
     "No Quarantine" : {
       "comment" : "Brew no quarantine flag toggle title",
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -5923,6 +5983,7 @@
     },
     "Other Flags" : {
       "comment" : "Brew settings command line flags section title",
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -6918,6 +6979,9 @@
         }
       }
     },
+    "Show updates for apps that normally update themselves, which are hidden by default. (Homebrew: `--greedy`)" : {
+      "comment" : "Brew greedy flag toggle description"
+    },
     "Sort By" : {
       "comment" : "Sorting option picker",
       "localizations" : {
@@ -7040,6 +7104,12 @@
         }
       }
     },
+    "Stop download" : {
+
+    },
+    "Successful installs & updates" : {
+
+    },
     "System" : {
       "comment" : "Color mode",
       "extractionState" : "manual",
@@ -7125,6 +7195,7 @@
     },
     "Task completions" : {
       "comment" : "Notification settings toggle",
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -7166,6 +7237,7 @@
     },
     "Task errors" : {
       "comment" : "Notification settings toggle",
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -7533,6 +7605,9 @@
           }
         }
       }
+    },
+    "Trust Unregistered Developers" : {
+      "comment" : "Brew no quarantine flag toggle title"
     },
     "Turn off few downloads filter" : {
       "comment" : "Filter disable button",

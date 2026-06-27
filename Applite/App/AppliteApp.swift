@@ -48,6 +48,10 @@ struct AppliteApp: App {
                     .environment(\.updater, updaterController.updater)
                     .frame(minWidth: 970, minHeight: 520)
                     .preferredColorScheme(selectedColorScheme)
+                    // Give the app delegate the live manager so it can stop running
+                    // tasks on quit. Direct reference — no `NSApp.delegate as?` cast
+                    // or timing fragility.
+                    .onAppear { appDelegate.caskManager = caskManager }
             } else {
                 SetupView()
                     .frame(width: 600, height: 400)

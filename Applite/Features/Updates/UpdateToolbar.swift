@@ -15,7 +15,7 @@ struct UpdateToolbar: ToolbarContent {
     var body: some ToolbarContent {
         if #available(macOS 26.0, *) {
             ToolbarItem {
-                GreedyUpgradeToggle()
+                GreedyUpgradeToggle(descriptionPlacement: .popover)
                     .padding(.horizontal)
                     .toggleStyle(.checkbox)
             }
@@ -28,7 +28,7 @@ struct UpdateToolbar: ToolbarContent {
         } else {
             ToolbarItemGroup {
                 HStack {
-                    GreedyUpgradeToggle()
+                    GreedyUpgradeToggle(descriptionPlacement: .popover)
                         .toggleStyle(.checkbox)
 
                     Spacer()

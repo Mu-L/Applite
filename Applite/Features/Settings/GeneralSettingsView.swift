@@ -17,39 +17,30 @@ struct GeneralSettingsView: View {
     @State var fixingColor = false
 
     var body: some View {
-        VStack(alignment: .leading) {
-            Text("Appearance", comment: "Appearnace settings title")
-                .bold()
-
-            Picker("Color Scheme:", selection: $colorSchemePreference) {
-                ForEach(ColorSchemePreference.allCases) { color in
-                    Text(color.description)
+        Form {
+            Section("Appearance") {
+                Picker("Color Scheme:", selection: $colorSchemePreference) {
+                    ForEach(ColorSchemePreference.allCases) { color in
+                        Text(color.description)
+                    }
                 }
+                .pickerStyle(.segmented)
             }
-            .pickerStyle(.segmented)
 
-            Divider()
-                .padding(.vertical)
-
-            Text("App Catalog", comment: "Catalog settings title")
-                .bold()
-
-            Picker("Fetch app catalog every:", selection: $catalogUpdateFrequency) {
-                ForEach(CatalogUpdateFrequency.allCases) { freq in
-                    Text(freq.description)
+            Section("App Catalog") {
+                Picker("Fetch app catalog every:", selection: $catalogUpdateFrequency) {
+                    ForEach(CatalogUpdateFrequency.allCases) { freq in
+                        Text(freq.description)
+                    }
                 }
             }
 
-            Divider()
-                .padding(.vertical)
-
-            Text("Notifications", comment: "Notification settings title")
-                .bold()
-
-            Toggle("Task completions", isOn: $notificationOnSuccess)
-            Toggle("Task errors", isOn: $notificationOnFailure)
+            Section("Notifications") {
+                Toggle("Successful installs & updates", isOn: $notificationOnSuccess)
+                Toggle("Failed installs & updates", isOn: $notificationOnFailure)
+            }
         }
-        .padding()
+        .formStyle(.grouped)
         .onChange(of: colorSchemePreference) { _, colorScheme in
             // Don't remove this!
             // This is here because changing the .preferredColorScheme view modifier is bugged

@@ -14,35 +14,37 @@ struct AppdirSelectorView: View {
     @State var choosingAppdir = false
     
     var body: some View {
-        VStack(alignment: .leading) {
-            HStack {
-                Toggle("Use Custom Installation Directory", isOn: $appdirOn)
-
-                InfoPopup(text: "Download apps to a custom directory instead of `/Applications`")
+        Toggle(isOn: $appdirOn) {
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Use Custom Installation Directory")
+                Text("Install apps to a folder of your choice instead of /Applications. (Homebrew: `--appdir`)", comment: "Appdir setting description")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
             }
-
-            HStack {
-                TextField("Custom Installation Directory", text: $appdirPath, prompt: Text("/path/to/dir"))
-                    .autocorrectionDisabled()
-                    .textFieldStyle(.roundedBorder)
-                
-                Button("Select Folder") {
-                    choosingAppdir = true
-                }
-                .fileImporter(
-                    isPresented: $choosingAppdir,
-                    allowedContentTypes: [.directory]
-                ) { result in
-                    switch result {
-                    case .success(let file):
-                        appdirPath = file.path
-                    case .failure(let error):
-                        print(error.localizedDescription)
-                    }
-                }
-            }
-            .disabled(!appdirOn)
         }
+
+        HStack {
+            TextField("Installation Directory", text: $appdirPath, prompt: Text("/path/to/dir"))
+                .labelsHidden()
+                .autocorrectionDisabled()
+                .textFieldStyle(.roundedBorder)
+
+            Button("Select Folder") {
+                choosingAppdir = true
+            }
+            .fileImporter(
+                isPresented: $choosingAppdir,
+                allowedContentTypes: [.directory]
+            ) { result in
+                switch result {
+                case .success(let file):
+                    appdirPath = file.path
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+        }
+        .disabled(!appdirOn)
     }
 }
 

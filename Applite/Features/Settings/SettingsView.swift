@@ -73,7 +73,7 @@ struct SettingsView: View {
                 NSApp.keyWindow?.makeFirstResponder(nil)
             }
         }
-        .frame(width: 440)
+        .frame(width: 500, height: 460)
     }
 }
 

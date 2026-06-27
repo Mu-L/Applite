@@ -11,18 +11,18 @@ struct UninstallView: View {
     @Environment(\.openWindow) var openWindow
 
     var body: some View {
-        VStack(alignment: .center) {
-            Button(role: .destructive) {
-                openWindow(id: "uninstall-self")
-            } label: {
-                Label("Uninstall", systemImage: "trash.fill")
+        Form {
+            Section {
+                Button(role: .destructive) {
+                    openWindow(id: "uninstall-self")
+                } label: {
+                    Label("Uninstall Applite", systemImage: "trash")
+                        .foregroundStyle(.red)
+                }
+            } footer: {
+                Text("Uninstall Applite, related files and cache.", comment: "Settings Uninstall Applite view description")
             }
-            .buttonStyle(.borderedProminent)
-            .tint(.red)
-            .controlSize(.large)
-
-            Text("Uninstall Applite, related files and cache.", comment: "Settings Uninstall Applite view description")
         }
-        .padding()
+        .formStyle(.grouped)
     }
 }

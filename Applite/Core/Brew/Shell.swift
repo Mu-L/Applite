@@ -92,9 +92,32 @@ enum Shell {
     /// Using the `pty` option can leave unwanted characters in the output, use only when necessary
     static func stream(_ command: String, pty: Bool = false) -> AsyncThrowingStream<String, Error> {
         AsyncThrowingStream { continuation in
+            let task: Process
+            let pipe: Pipe
+
+            do {
+                (task, pipe) = try createProcess(command: command, pty: pty)
+            } catch {
+                continuation.finish(throwing: error)
+                return
+            }
+
+            // Terminate the process if the consumer cancels (or otherwise stops iterating).
+            //
+            // This is a hard kill, not a graceful cancellation: `terminate()` sends SIGTERM
+            // to the `script` wrapper, which closes the pty and SIGHUPs the foreground
+            // process group (brew + curl). brew does NOT run its cooperative SIGINT-cancel
+            // path here — SIGINT can't be used because `script` ignores it (so a real Ctrl-C
+            // passes through to the child instead of killing the wrapper). The hard kill is
+            // safe for the download phase: brew downloads to `*.incomplete` temp files and
+            // only renames them on success, and its cache locks are OS `flock`s that the
+            // kernel releases on process death. Worst case is a resumable leftover temp file.
+            continuation.onTermination = { _ in
+                if task.isRunning { task.terminate() }
+            }
+
             Task {
                 do {
-                    let (task, pipe) = try createProcess(command: command, pty: pty)
                     let fileHandle = pipe.fileHandleForReading
 
                     try task.run()
