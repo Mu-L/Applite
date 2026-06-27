@@ -834,6 +834,7 @@
     },
     "Actions" : {
       "comment" : "Brew Management view action section title",
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -1545,6 +1546,9 @@
         }
       }
     },
+    "Applite is powered by [Homebrew](https://brew.sh/), a free and open-source tool that installs and keeps your apps up to date behind the scenes. You don't need to set it up or use it directly — Applite takes care of everything for you." : {
+      "comment" : "Manage Homebrew view description"
+    },
     "Applite uses the system network proxy, but it can only use one protocol (HTTP, HTTPS, or SOCKS5). Select your preferred method." : {
       "comment" : "Proxy settings description",
       "extractionState" : "stale",
@@ -1754,6 +1758,7 @@
     },
     "Are you sure you want to force install %@? This will override any current installation!" : {
       "comment" : "App force install confirmation",
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -3495,7 +3500,7 @@
 
     },
     "Error" : {
-      "comment" : "Cask action failed (e.g. installation failed)",
+      "comment" : "Brew info value when loading fails\nCask action failed (e.g. installation failed)",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -4766,6 +4771,7 @@
     },
     "In progress..." : {
       "comment" : "Brew Management view progress indicator",
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -6405,7 +6411,7 @@
 
     },
     "Reinstall" : {
-      "comment" : "Reinstall app button",
+      "comment" : "Brew Management view reinstall section title",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -7404,6 +7410,7 @@
     },
     "This application uses the [Homebrew](https://brew.sh/) (brew for short) package manager to download apps. Homebrew is a free and open source command line utility that can download useful developer tools as well as desktop applications." : {
       "comment" : "Manage Homebrew view description",
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -7907,7 +7914,7 @@
       }
     },
     "Update" : {
-      "comment" : "Update Applite button",
+      "comment" : "Brew Management view update section title",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -8644,6 +8651,7 @@
     },
     "Yes" : {
       "comment" : "Confirmation",
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {

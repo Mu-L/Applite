@@ -8,25 +8,18 @@
 import SwiftUI
 
 struct BrewInfoView: View {
-    let cardWidth: CGFloat
-    let cardPadding: CGFloat
-    let cardHeight: CGFloat = 120
-
-    // These will be loaded in asynchronously
-    @State var homebrewVersion = "loading..."
-    @State var numberOfCasks = "loading..."
+    // These will be loaded in asynchronously (nil = still loading)
+    @State var homebrewVersion: String? = nil
+    @State var numberOfCasks: String? = nil
 
     var body: some View {
-        VStack(alignment: .leading) {
-            Text("Info", comment: "Brew Management view info section title")
-                .font(.appliteSmallTitle)
+        Section("Info") {
+            LabeledContent("Homebrew Version") {
+                infoValue(homebrewVersion)
+            }
 
-            HStack {
-                infoCard(title: "Homebrew Version", info: homebrewVersion)
-                    .frame(width: cardWidth)
-
-                infoCard(title: "Apps Installed", info: numberOfCasks)
-                    .frame(width: cardWidth)
+            LabeledContent("Apps Installed") {
+                infoValue(numberOfCasks)
             }
         }
         .task {
@@ -35,8 +28,8 @@ struct BrewInfoView: View {
                   let version = versionOutput.firstMatch(of: /Homebrew ([\d\.]+)/),
                   let casksInstalled = try? await Shell.runBrewCommand(["list", "--cask", "--full-name", "|", "wc", "-w"]) else {
 
-                homebrewVersion = "Error"
-                numberOfCasks = "Error"
+                homebrewVersion = String(localized: "Error", comment: "Brew info value when loading fails")
+                numberOfCasks = String(localized: "Error", comment: "Brew info value when loading fails")
                 return
             }
 
@@ -45,16 +38,13 @@ struct BrewInfoView: View {
         }
     }
 
-    private func infoCard(title: LocalizedStringKey, info: String) -> some View {
-        Card(padding: 8) {
-            VStack {
-                Text(title)
-                    .font(.system(size: 16, weight: .bold))
-
-                Text(info)
-                    .font(.system(size: 52, weight: .thin))
-            }
+    @ViewBuilder
+    private func infoValue(_ value: String?) -> some View {
+        if let value {
+            Text(value)
+        } else {
+            ProgressView()
+                .controlSize(.small)
         }
-        .frame(height: 100)
     }
 }
