@@ -9,23 +9,101 @@ import SwiftUI
 
 struct CaskInfoWindowView: View {
     let info: CaskAdditionalInfo
-    @Environment(\.openURL) private var openURL
 
     var body: some View {
-        Table(rows) {
-            TableColumn("Property", value: \.property)
-                .width(120)
+        Form {
+            Section {
+                infoRow("Token", info.token)
+                infoRow("Full Token", info.full_token)
+                infoRow("Tap", info.tap)
 
-            TableColumn("Value") { row in
-                if let url = row.url {
-                    Link(row.value, destination: url)
-                } else {
-                    Text(row.value)
-                        .textSelection(.enabled)
+                linkRow("Homepage", url: info.homepage)
+
+                linkRow("Download URL", url: info.url)
+            } header: {
+                Label("General", systemImage: "info.circle")
+            }
+
+            Section {
+                infoRow("Installed Version", info.installed ?? String(localized: "Not installed", comment: "Cask info: app is not installed"))
+                infoRow("Bundle Version", info.bundle_version ?? "—")
+
+                if let installedTime = info.installed_time {
+                    infoRow("Installation Date", dateFormatter.string(from: installedTime))
+                }
+
+                if let outdated = info.outdated {
+                    infoRow("Outdated", yesNo(outdated))
+                }
+
+                infoRow("Auto Updates", yesNo(info.auto_updates ?? false))
+            } header: {
+                Label("Installation", systemImage: "arrow.down.circle")
+            }
+
+            if info.deprecated {
+                Section {
+                    if let date = info.deprecation_date {
+                        infoRow("Date", date)
+                    }
+                    if let reason = info.deprecation_reason {
+                        infoRow("Reason", reason)
+                    }
+                    if let replacement = info.deprecation_replacement {
+                        infoRow("Replacement", replacement)
+                    }
+                } header: {
+                    Label("Deprecated", systemImage: "exclamationmark.triangle.fill")
+                        .foregroundStyle(.orange)
+                }
+            }
+
+            if info.disabled {
+                Section {
+                    if let date = info.disable_date {
+                        infoRow("Date", date)
+                    }
+                    if let reason = info.disable_reason {
+                        infoRow("Reason", reason)
+                    }
+                    if let replacement = info.disable_replacement {
+                        infoRow("Replacement", replacement)
+                    }
+                } header: {
+                    Label("Disabled", systemImage: "xmark.octagon.fill")
+                        .foregroundStyle(.red)
                 }
             }
         }
-        .frame(minWidth: 600, minHeight: 400)
+        .formStyle(.grouped)
+        .navigationTitle(info.token)
+        .frame(width: 460, height: 520)
+    }
+
+    private func infoRow(_ title: LocalizedStringKey, _ value: String) -> some View {
+        LabeledContent(title) {
+            Text(value)
+                .textSelection(.enabled)
+        }
+    }
+
+    /// A row for long URLs: the label sits on top with the link wrapping
+    /// full-width on the line below, left-aligned.
+    private func linkRow(_ title: LocalizedStringKey, url: URL) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(title)
+
+            Link(url.absoluteString, destination: url)
+                .multilineTextAlignment(.leading)
+                .textSelection(.enabled)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private func yesNo(_ value: Bool) -> String {
+        value
+            ? String(localized: "Yes", comment: "Cask info boolean value")
+            : String(localized: "No", comment: "Cask info boolean value")
     }
 
     private let dateFormatter: DateFormatter = {
@@ -34,74 +112,6 @@ struct CaskInfoWindowView: View {
         formatter.timeStyle = .short
         return formatter
     }()
-
-    // Data structure to represent each row
-    private struct Row: Identifiable {
-        let id = UUID()
-        let property: String
-        let value: String
-        let url: URL?
-
-        init(property: String, value: String, url: URL? = nil) {
-            self.property = property
-            self.value = value
-            self.url = url
-        }
-    }
-
-    private var rows: [Row] {
-        var result: [Row] = [
-            Row(property: "Token", value: info.token),
-            Row(property: "Full Token", value: info.full_token),
-            Row(property: "Tap", value: info.tap),
-            Row(property: "Homepage", value: info.homepage.absoluteString, url: info.homepage),
-            Row(property: "URL", value: info.url.absoluteString, url: info.url),
-            Row(property: "Installed Version", value: info.installed ?? "Not installed"),
-            Row(property: "Bundle Version", value: info.bundle_version ?? "Not installed"),
-            Row(property: "Auto Updates", value: (info.auto_updates ?? false) ? "Yes" : "No")
-        ]
-
-        if let outdated = info.outdated {
-            result.append(Row(property: "Outdated", value: outdated ? "Yes" : "No"))
-        }
-
-        if let installedTime = info.installed_time {
-            result.append(Row(property: "Installation Date",
-                              value: dateFormatter.string(from: installedTime)))
-        }
-
-        result.append(Row(property: "Deprecated", value: info.deprecated ? "Yes" : "No"))
-
-        if info.deprecated {
-            if let date = info.deprecation_date {
-                result.append(Row(property: "Deprecation Date",
-                                  value: date))
-            }
-            if let reason = info.deprecation_reason {
-                result.append(Row(property: "Deprecation Reason", value: reason))
-            }
-            if let replacement = info.deprecation_replacement {
-                result.append(Row(property: "Deprecation Replacement", value: replacement))
-            }
-        }
-
-        result.append(Row(property: "Disabled", value: info.disabled ? "Yes" : "No"))
-
-        if info.disabled {
-            if let date = info.disable_date {
-                result.append(Row(property: "Disabled Date",
-                                  value: date))
-            }
-            if let reason = info.disable_reason {
-                result.append(Row(property: "Disabled Reason", value: reason))
-            }
-            if let replacement = info.disable_replacement {
-                result.append(Row(property: "Disabled Replacement", value: replacement))
-            }
-        }
-
-        return result
-    }
 }
 
 #Preview {

@@ -110,7 +110,7 @@ struct AppView: View {
         Button {
             Task { await getInfo() }
         } label: {
-            Label("Get Info", systemImage: "info.circle")
+            Label("Get Info", systemImage: "info")
         }
     }
 

@@ -1839,6 +1839,9 @@
         }
       }
     },
+    "Auto Updates" : {
+
+    },
     "Automatically check for updates" : {
       "comment" : "Applite update option checkmark",
       "localizations" : {
@@ -2285,6 +2288,9 @@
           }
         }
       }
+    },
+    "Bundle Version" : {
+
     },
     "Bypasses the Apple Gatekeeper check, which can be useful if the app is from an unregistered developer. **Use it at your own risk!**" : {
       "comment" : "Brew no quarantine flag toggle description",
@@ -3087,6 +3093,9 @@
         }
       }
     },
+    "Date" : {
+
+    },
     "Delete Homebrew cache" : {
       "comment" : "Applite uninstall option checkmark",
       "localizations" : {
@@ -3127,6 +3136,9 @@
           }
         }
       }
+    },
+    "Deprecated" : {
+
     },
     "Developer Tools" : {
       "comment" : "App category",
@@ -3169,6 +3181,9 @@
           }
         }
       }
+    },
+    "Disabled" : {
+
     },
     "Discord" : {
       "comment" : "Applite discord",
@@ -3412,6 +3427,9 @@
           }
         }
       }
+    },
+    "Download URL" : {
+
     },
     "Enabled" : {
       "comment" : "Brew mirror option enabled toggle",
@@ -4157,6 +4175,9 @@
           }
         }
       }
+    },
+    "Full Token" : {
+
     },
     "General" : {
       "comment" : "Settings tab",
@@ -4985,6 +5006,12 @@
         }
       }
     },
+    "Installation" : {
+
+    },
+    "Installation Date" : {
+
+    },
     "Installation Directory" : {
 
     },
@@ -5072,6 +5099,9 @@
           }
         }
       }
+    },
+    "Installed Version" : {
+
     },
     "Installing" : {
       "comment" : "Install progress text",
@@ -5615,6 +5645,9 @@
         }
       }
     },
+    "No" : {
+      "comment" : "Cask info boolean value"
+    },
     "No Active Tasks" : {
       "comment" : "No active tasks available message",
       "localizations" : {
@@ -5780,6 +5813,9 @@
           }
         }
       }
+    },
+    "Not installed" : {
+      "comment" : "Cask info: app is not installed"
     },
     "Note" : {
       "comment" : "Remark",
@@ -6030,6 +6066,9 @@
         }
       }
     },
+    "Outdated" : {
+
+    },
     "Password Managers" : {
       "comment" : "App category",
       "extractionState" : "manual",
@@ -6198,6 +6237,7 @@
     },
     "Property" : {
       "comment" : "Additional cask info property table column",
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -6359,6 +6399,9 @@
           }
         }
       }
+    },
+    "Reason" : {
+
     },
     "Refresh" : {
       "comment" : "Update refresh button",
@@ -6616,6 +6659,9 @@
           }
         }
       }
+    },
+    "Replacement" : {
+
     },
     "Restart Applite for changes to take effect." : {
       "comment" : "Brew settings relaunch app prompt",
@@ -7159,6 +7205,9 @@
         }
       }
     },
+    "Tap" : {
+
+    },
     "Taps" : {
       "comment" : "Brew settings tap section title",
       "localizations" : {
@@ -7572,6 +7621,9 @@
           }
         }
       }
+    },
+    "Token" : {
+
     },
     "Troubleshooting" : {
       "comment" : "Applite troubleshooting website link",
@@ -8369,6 +8421,7 @@
     },
     "Value" : {
       "comment" : "Cask info window property value",
+      "extractionState" : "stale",
       "localizations" : {
         "fr" : {
           "stringUnit" : {
@@ -8650,8 +8703,7 @@
       "shouldTranslate" : false
     },
     "Yes" : {
-      "comment" : "Confirmation",
-      "extractionState" : "stale",
+      "comment" : "Cask info boolean value",
       "localizations" : {
         "fr" : {
           "stringUnit" : {

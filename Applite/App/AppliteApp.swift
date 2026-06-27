@@ -84,5 +84,6 @@ struct AppliteApp: App {
         WindowGroup("Cask Info", for: CaskAdditionalInfo.self) { $info in
             CaskInfoWindowView(info: info ?? .dummy)
         }
+        .windowResizability(.contentSize)
     }
 }
