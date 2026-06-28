@@ -232,7 +232,9 @@ enum Shell {
         var environment: [String: String] = [
             "SUDO_ASKPASS": scriptPath,
             "TERM": "xterm-256color", // Ensure terminal emulation
-            "HOME": homeDirectory
+            "HOME": homeDirectory,
+            "HOMEBREW_NO_ASK": "1", // Brew 6+ enables ask mode (confirmation prompts) by default; Applite drives brew non-interactively
+            "HOMEBREW_NO_ENV_HINTS": "1" // Suppress advisory hint lines so they don't clutter the parsed output stream
         ]
 
         if let proxySettings = try? NetworkProxyManager.getSystemProxySettings() {
