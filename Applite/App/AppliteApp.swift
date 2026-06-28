@@ -71,8 +71,8 @@ struct AppliteApp: App {
         .windowResizability(.contentSize)
         
         Window("Uninstall Applite", id: "uninstall-self") {
-            UninstallSelfView()
-                .padding()
+            UninstallView()
+                .frame(width: 480, height: 520)
                 .preferredColorScheme(selectedColorScheme)
         }
         .windowResizability(.contentSize)

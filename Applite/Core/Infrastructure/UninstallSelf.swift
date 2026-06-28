@@ -12,45 +12,48 @@ import Kingfisher
 /// This function will uninstall Applite and all it's related files
 func uninstallSelf(deleteBrewCache: Bool, uninstallHomebrew: Bool = false) async throws {
     let logger = Logger()
-    
-    logger.notice("Applite uninstallation stated. deleteBrewCache: \(deleteBrewCache), uninstallHomebrew: \(uninstallHomebrew)")
+    let bundleID = Bundle.main.bundleIdentifier ?? "dev.aerolite.Applite"
 
+    logger.notice("Applite uninstallation started. deleteBrewCache: \(deleteBrewCache), uninstallHomebrew: \(uninstallHomebrew)")
+
+    // Clear Kingfisher image cache (disk cache is also covered by the rm below)
     logger.notice("Clearing Kingfisher image cache")
-
     let cache = ImageCache.default
     cache.clearMemoryCache()
-    cache.clearDiskCache {
-        logger.notice("Kingfisher disk image cache cleared")
-    }
+    await cache.clearDiskCache()
 
-    logger.notice("Deleting library files")
+    // Delete related files and cache.
+    // Paths containing spaces are quoted; the Preferences/SyncedPreferences
+    // entries are left unquoted on purpose so the shell expands their globs.
+    let paths = [
+        "\"$HOME/Library/Application Support/Applite\"",
+        "\"$HOME/Library/Application Support/\(bundleID)\"",
+        "$HOME/Library/Containers/\(bundleID)",
+        "$HOME/Library/Caches/Applite",
+        "$HOME/Library/Caches/\(bundleID)",
+        "$HOME/Library/Applite",
+        "$HOME/Library/Preferences/*\(bundleID)*.plist",
+        "\"$HOME/Library/Saved Application State/\(bundleID).savedState\"",
+        "$HOME/Library/SyncedPreferences/\(bundleID)*.plist",
+        "$HOME/Library/WebKit/\(bundleID)",
+        "$HOME/Library/HTTPStorages/\(bundleID)"
+    ]
 
-    // Delete related files and cache (using -rf to ignore missing files)
-    let command = """
-    rm -rf "$HOME/Library/Application Support/Applite";
-    rm -rf "$HOME/Library/Application Support/\(Bundle.main.bundleIdentifier!)";
-    rm -rf $HOME/Library/Containers/\(Bundle.main.bundleIdentifier!);
-    rm -rf $HOME/Library/Caches/Applite;
-    rm -rf $HOME/Library/Caches/\(Bundle.main.bundleIdentifier!);
-    rm -rf $HOME/Library/Applite;
-    rm -rf $HOME/Library/Preferences/*\(Bundle.main.bundleIdentifier!)*.plist;
-    rm -rf "$HOME/Library/Saved Application State/\(Bundle.main.bundleIdentifier!).savedState";
-    rm -rf $HOME/Library/SyncedPreferences/\(Bundle.main.bundleIdentifier!)*.plist;
-    rm -rf $HOME/Library/WebKit/\(Bundle.main.bundleIdentifier!);
-    rm -rf $HOME/Library/HTTPStorages/dev.aerolite.Applite
-    """
-    
-    logger.notice("Running command: \(command)")
-    
-    let output = try await Shell.runAsync(command)
+    // -rf so missing files are ignored; each path on its own line runs independently
+    let deleteCommand = paths
+        .map { "rm -rf \($0)" }
+        .joined(separator: "\n")
 
+    logger.notice("Deleting library files:\n\(deleteCommand)")
+
+    let output = try await Shell.runAsync(deleteCommand)
     logger.notice("Uninstall result: \(output)")
-    
+
     // If uninstalling Homebrew, delete cache first and then uninstall Homebrew
     if uninstallHomebrew {
         logger.notice("Deleting Homebrew cache before uninstalling Homebrew")
         try await Shell.runAsync("rm -rf $HOME/Library/Caches/Homebrew")
-        
+
         logger.notice("Uninstalling Homebrew")
         try await uninstallHomebrewCompletely()
     } else if deleteBrewCache {
@@ -58,13 +61,22 @@ func uninstallSelf(deleteBrewCache: Bool, uninstallHomebrew: Bool = false) async
         logger.notice("Deleting Homebrew cache")
         try await Shell.runAsync("rm -rf $HOME/Library/Caches/Homebrew")
     }
-    
+
     logger.notice("Self destructing. Goodbye world! o7")
-    
-    // Quit the app and remove it
+
+    // Quit the app, remove the bundle, and reset the setup flag.
+    // Steps are newline-separated (not &&) so a slow/failed quit still
+    // lets the cleanup run.
+    let selfDestruct = """
+    osascript -e 'tell application "Applite" to quit'
+    sleep 2
+    rm -rf "\(Bundle.main.bundlePath)"
+    defaults write \(bundleID) setupComplete 0
+    """
+
     let process = Process()
     process.launchPath = "/bin/bash"
-    process.arguments = ["-c", "osascript -e 'tell application \"Applite\" to quit' && sleep 2 && rm -rf \"\(Bundle.main.bundlePath)\" && defaults write \(Bundle.main.bundleIdentifier!) setupComplete 0"]
+    process.arguments = ["-c", selfDestruct]
     process.launch()
 }
 
